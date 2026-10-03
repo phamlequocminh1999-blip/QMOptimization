@@ -1,0 +1,159 @@
+/* Custom Base Fonts & Style Adjustments */
+body {
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    background-color: #0a0d14;
+    color: #e2e8f0;
+}
+
+.code-font {
+    font-family: 'JetBrains Mono', monospace;
+}
+
+/* Glow & Custom Effects */
+.glow-effect {
+    box-shadow: 0 0 20px rgba(0, 240, 255, 0.15);
+}
+
+.glow-button {
+    box-shadow: 0 0 15px rgba(34, 197, 94, 0.4);
+    transition: all 0.3s ease;
+}
+
+.glow-button:hover {
+    box-shadow: 0 0 25px rgba(34, 197, 94, 0.7);
+}
+
+/* Custom Scrollbar Styles */
+::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+}
+
+::-webkit-scrollbar-track {
+    background: #0a0d14;
+}
+
+::-webkit-scrollbar-thumb {
+    background: #1e293b;
+    border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: #334155;
+}
+
+/* =========================================================
+   Hiệu ứng Sao Băng Rơi (Đã chỉnh lại góc nghiêng chéo)
+   ========================================================= */
+.meteor-container {
+    position: fixed;
+    inset: 0;
+    overflow: hidden;
+    pointer-events: none;
+    z-index: 0;
+}
+
+.meteor {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 2px;
+    height: 2px;
+    border-radius: 999px;
+    background: #ffffff;
+    box-shadow: 0 0 6px 1px rgba(255, 255, 255, 0.9);
+    opacity: 0;
+    animation-name: meteor-fall;
+    animation-timing-function: linear;
+    animation-iteration-count: infinite;
+}
+
+..meteor::before {
+    content: "";
+    position: absolute;
+    top: 50%; /* Đã sửa lỗi cú pháp */
+    right: 0;
+    width: 120px;
+    height: 1px;
+    transform: translateY(-50%);
+    background: linear-gradient(90deg, rgba(255, 255, 255, 0.9), rgba(255, 255, 255, 0));
+}
+
+.meteor.meteor-accent {
+    background: #00f0ff;
+    box-shadow: 0 0 8px 1px rgba(0, 240, 255, 0.9);
+}
+
+.meteor.meteor-accent::before {
+    background: linear-gradient(90deg, rgba(0, 240, 255, 0.9), rgba(0, 240, 255, 0));
+}
+
+@keyframes meteor-fall {
+    0% {
+        /* Đổi góc xoay thành 45 độ để sao băng bay chéo đẹp mắt từ trên xuống */
+        transform: translate(0, 0) rotate(45deg);
+        opacity: 0;
+    }
+    10% {
+        opacity: 1;
+    }
+    85% {
+        opacity: 1;
+    }
+    100% {
+        /* Dịch chuyển x và y theo hướng chéo xuống dưới-phải */
+        transform: translate(800px, 800px) rotate(45deg);
+        opacity: 0;
+    }
+}
+
+/* Đảm bảo nội dung chính luôn nằm trên lớp sao băng */
+header, main, footer {
+    position: relative;
+    z-index: 1;
+}
+
+/* Tắt hiệu ứng cho người dùng bật "giảm chuyển động" trên hệ điều hành */
+@media (prefers-reduced-motion: reduce) {
+    .meteor-container {
+        display: none;
+    }
+}
+
+/* Panel hiển thị lệnh chi tiết của từng tweak (mở/đóng qua icon info) */
+.tweak-command-panel {
+    max-height: 0;
+    overflow: hidden;
+    opacity: 0;
+    transition: max-height 0.25s ease, opacity 0.25s ease, margin 0.25s ease;
+}
+
+.tweak-command-panel.open {
+    max-height: 400px;
+    opacity: 1;
+    margin-top: 0.5rem;
+}
+
+/* Nút Về Đầu Trang: hiện dạng flex khi được JS gỡ class hidden */
+#backToTopBtn.show {
+    display: flex;
+}
+/* Fix lỗi ô tick bị lệch trên các card Tweak */
+#tweakList > div {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+#tweakList > div > div:first-child {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    width: 100%;
+}
+
+#tweakList input[type="checkbox"] {
+    margin-left: 12px;
+    margin-top: 2px;
+    flex-shrink: 0;
+}

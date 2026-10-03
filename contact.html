@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="vi" class="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Liên Hệ & Hỗ Trợ - QMinhOTM</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        brand: { 500: '#22c55e', accent: '#00f0ff', neon: '#7000ff' },
+                        darkbg: '#0a0d14', cardbg: '#111622', bordercolor: '#1e293b'
+                    }
+                }
+            }
+        }
+    </script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body class="min-h-screen flex flex-col selection:bg-brand-500 selection:text-black">
+
+    <!-- Header -->
+    <header class="border-b border-bordercolor bg-cardbg/80 backdrop-blur-md sticky top-0 z-50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
+            <div class="flex items-center space-x-3 cursor-pointer" onclick="window.location.href='index.html'">
+                <div class="w-10 h-10 rounded-xl bg-gradient-to-tr from-brand-neon to-brand-accent flex items-center justify-center font-extrabold text-xl text-white">Q</div>
+                <div>
+                    <span class="text-xl font-extrabold bg-gradient-to-r from-white to-brand-accent bg-clip-text text-transparent">QMinhOTM</span>
+                </div>
+            </div>
+            
+            <nav class="hidden md:flex space-x-6 text-sm font-medium">
+                <a href="index.html" class="text-slate-400 hover:text-white transition">Dashboard (Trang chủ)</a>
+                <a href="contact.html" class="text-brand-accent">Hỗ trợ & Liên hệ</a>
+            </nav>
+
+            <div class="flex items-center space-x-3" id="userMenu">
+                <!-- Data tải từ contact.js -->
+            </div>
+        </div>
+    </header>
+
+    <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10 flex-grow w-full">
+        <div class="text-center mb-10">
+            <h1 class="text-3xl font-bold text-white mb-2">Trung Tâm Hỗ Trợ QMinhOTM</h1>
+            <p class="text-slate-400 text-sm">Chúng tôi luôn sẵn sàng hỗ trợ bạn tối ưu hóa hệ thống tốt nhất.</p>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+            <!-- Form Liên hệ -->
+            <div class="bg-cardbg border border-bordercolor rounded-2xl p-6 shadow-lg">
+                <h2 class="text-xl font-bold text-white mb-4"><i class="fa-solid fa-paper-plane text-brand-neon mr-2"></i> Gửi Yêu Cầu Hỗ Trợ</h2>
+                <form id="contactForm" class="space-y-4">
+                    <div>
+                        <label class="block text-xs font-semibold text-slate-400 mb-1">Chủ đề cần hỗ trợ</label>
+                        <select id="issueType" class="w-full bg-slate-900 border border-slate-700 text-white text-sm rounded-lg p-3 focus:border-brand-accent focus:outline-none transition">
+                            <option>Lỗi khi chạy file Script (.bat)</option>
+                            <option>Vấn đề về FPS / Giật lag khi chơi game</option>
+                            <option>Báo lỗi giao diện website</option>
+                            <option>Đề xuất thêm tính năng tối ưu mới</option>
+                            <option>Khác</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label class="block text-xs font-semibold text-slate-400 mb-1">Mô tả chi tiết</label>
+                        <textarea id="message" rows="5" required class="w-full bg-slate-900 border border-slate-700 text-white text-sm rounded-lg p-3 focus:border-brand-accent focus:outline-none transition" placeholder="Vui lòng cung cấp thông tin chi tiết về hệ thống của bạn và vấn đề gặp phải..."></textarea>
+                    </div>
+                    <button type="submit" class="w-full bg-brand-500 hover:bg-brand-600 text-black font-bold py-3 rounded-lg transition glow-button flex justify-center items-center gap-2">
+                        <i class="fa-solid fa-envelope-open-text"></i> Gửi Yêu Cầu
+                    </button>
+                </form>
+            </div>
+
+            <!-- Kênh thông tin & Mạng xã hội -->
+            <div class="space-y-6">
+                <div class="bg-cardbg border border-bordercolor rounded-2xl p-6 shadow-lg h-full">
+                    <h2 class="text-xl font-bold text-white mb-4"><i class="fa-solid fa-link text-brand-500 mr-2"></i> Kết Nối Nhanh</h2>
+                    <div class="space-y-3">
+                        <a href="#" class="flex items-center justify-between p-4 bg-slate-900 rounded-xl border border-slate-800 hover:border-[#5865F2] hover:bg-[#5865F2]/10 transition group">
+                            <div class="flex items-center space-x-4">
+                                <div class="w-10 h-10 bg-[#5865F2]/20 rounded-lg flex items-center justify-center">
+                                    <i class="fa-brands fa-discord text-xl text-[#5865F2]"></i>
+                                </div>
+                                <div>
+                                    <span class="block text-sm font-bold text-white">Discord Cộng Đồng</span>
+                                    <span class="text-xs text-slate-400">Tham gia thảo luận & Fix lỗi PC</span>
+                                </div>
+                            </div>
+                            <i class="fa-solid fa-arrow-right text-slate-500 group-hover:text-white transition"></i>
+                        </a>
+
+                        <a href="#" class="flex items-center justify-between p-4 bg-slate-900 rounded-xl border border-slate-800 hover:border-blue-500 hover:bg-blue-500/10 transition group">
+                            <div class="flex items-center space-x-4">
+                                <div class="w-10 h-10 bg-blue-500/20 rounded-lg flex items-center justify-center">
+                                    <i class="fa-brands fa-facebook text-xl text-blue-500"></i>
+                                </div>
+                                <div>
+                                    <span class="block text-sm font-bold text-white">Fanpage Facebook</span>
+                                    <span class="text-xs text-slate-400">Cập nhật tin tức & Thủ thuật</span>
+                                </div>
+                            </div>
+                            <i class="fa-solid fa-arrow-right text-slate-500 group-hover:text-white transition"></i>
+                        </a>
+                        
+                        <a href="mailto:hotro@qminh.com" class="flex items-center justify-between p-4 bg-slate-900 rounded-xl border border-slate-800 hover:border-brand-accent hover:bg-brand-accent/10 transition group">
+                            <div class="flex items-center space-x-4">
+                                <div class="w-10 h-10 bg-brand-accent/20 rounded-lg flex items-center justify-center">
+                                    <i class="fa-solid fa-envelope text-xl text-brand-accent"></i>
+                                </div>
+                                <div>
+                                    <span class="block text-sm font-bold text-white">Gửi Email Trực Tiếp</span>
+                                    <span class="text-xs text-slate-400">hotro@qminh.com</span>
+                                </div>
+                            </div>
+                            <i class="fa-solid fa-arrow-right text-slate-500 group-hover:text-white transition"></i>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <footer class="border-t border-bordercolor bg-cardbg/50 py-6 mt-auto text-center text-xs text-slate-500">
+        <p>© 2026 QMinhOTM - Optimizer Tool Manager. All rights reserved.</p>
+    </footer>
+
+    <script src="contact.js"></script>
+</body>
+</html>

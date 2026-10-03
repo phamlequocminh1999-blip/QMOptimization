@@ -1,0 +1,314 @@
+<!DOCTYPE html>
+<html lang="vi" class="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>QMinhOTM - PC & Laptop Optimizer Suite</title>
+
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        brand: {
+                            500: '#22c55e',
+                            600: '#16a34a',
+                            accent: '#00f0ff',
+                            neon: '#7000ff'
+                        },
+                        darkbg: '#0a0d14',
+                        cardbg: '#111622',
+                        bordercolor: '#1e293b'
+                    }
+                }
+            }
+        }
+    </script>
+
+    <!-- FontAwesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;600;700;800&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
+    
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="style.css">
+</head>
+<body class="min-h-screen flex flex-col justify-between selection:bg-brand-500 selection:text-black">
+
+    <!-- Header / Navbar -->
+    <header class="border-b border-bordercolor bg-cardbg/80 backdrop-blur-md sticky top-0 z-50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
+            <div class="flex items-center space-x-3 cursor-pointer" onclick="window.scrollTo({top: 0, behavior: 'smooth'})">
+                <div class="w-10 h-10 rounded-xl bg-gradient-to-tr from-brand-neon to-brand-accent flex items-center justify-center font-extrabold text-xl text-white shadow-lg">
+                    Q
+                </div>
+                <div>
+                    <span class="text-xl font-extrabold tracking-wider bg-gradient-to-r from-white via-slate-200 to-brand-accent bg-clip-text text-transparent">QMinhOTM</span>
+                    <span class="text-xs text-brand-500 block font-semibold -mt-1">OPTIMIZER TOOL MANAGER</span>
+                </div>
+            </div>
+            
+            <nav class="hidden md:flex space-x-6 text-sm font-medium text-slate-400 items-center">
+                <a href="#dashboard" class="hover:text-brand-accent transition">Dashboard</a>
+                <a href="#tweaks" class="hover:text-brand-accent transition">Tweak Engine</a>
+                <a href="#games" class="hover:text-brand-accent transition">Game Booster</a>
+                <a href="#script-gen" class="hover:text-brand-accent transition">Batch Exporter</a>
+                <a href="contact.html" class="hover:text-brand-accent transition">Hỗ trợ & Liên hệ</a>
+            </nav>
+
+            <div class="flex items-center space-x-3">
+                <button id="quickBoostBtn" onclick="runQuickBoost()" class="glow-button bg-brand-500 hover:bg-brand-600 text-black font-bold px-4 py-2 rounded-xl hidden sm:flex items-center space-x-2 text-sm">
+                    <i class="fa-solid fa-bolt"></i>
+                    <span>Tối Ưu Nhanh</span>
+                </button>
+
+                <!-- Khối quản lý Đăng nhập / Tài khoản -->
+                <div id="userMenu">
+                    <a href="login.html" class="text-xs bg-slate-800 hover:bg-slate-700 text-white font-semibold px-4 py-2 rounded-xl border border-slate-700 transition flex items-center gap-2">
+                        <i class="fa-regular fa-user text-brand-500"></i>
+                        <span>Đăng nhập</span>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-8 flex-grow w-full">
+
+        <!-- Agent Connection Banner -->
+        <section class="bg-cardbg border border-bordercolor rounded-2xl px-5 py-3 flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+            <div class="flex items-center gap-3">
+                <span id="agentStatusBadge" class="text-[11px] font-bold text-amber-400 bg-amber-400/10 px-2.5 py-1 rounded-full">○ DEMO MODE - Chưa kết nối Agent</span>
+                <span class="text-xs text-slate-400 hidden sm:inline">Số liệu CPU/RAM/GPU thật cần chạy Agent giám sát nội bộ (chỉ hoạt động trên localhost, không gửi dữ liệu ra ngoài).</span>
+            </div>
+            <button onclick="downloadAgentScript()" class="text-xs bg-brand-accent/10 hover:bg-brand-accent/20 text-brand-accent px-3 py-1.5 rounded-lg border border-brand-accent/30 font-semibold whitespace-nowrap">
+                <i class="fa-solid fa-download"></i> Tải Agent Giám Sát (.ps1)
+            </button>
+        </section>
+
+        <!-- Hero Section & System Gauges -->
+        <section id="dashboard" class="grid grid-cols-1 md:grid-cols-4 gap-4">
+            <!-- CPU Gauge -->
+            <div class="bg-cardbg border border-bordercolor p-5 rounded-2xl flex flex-col items-center justify-center relative overflow-hidden">
+                <div class="text-slate-400 text-xs font-bold uppercase mb-2 flex items-center gap-2">
+                    <i class="fa-solid fa-microchip text-brand-accent"></i> CPU Load
+                </div>
+                <div class="relative w-28 h-28 flex items-center justify-center">
+                    <svg class="w-full h-full transform -rotate-90">
+                        <circle cx="56" cy="56" r="45" stroke="#1e293b" stroke-width="8" fill="transparent"/>
+                        <circle id="cpuGauge" cx="56" cy="56" r="45" stroke="#00f0ff" stroke-width="8" stroke-dasharray="282" stroke-dashoffset="180" stroke-linecap="round" fill="transparent" class="transition-all duration-700"/>
+                    </svg>
+                    <span id="cpuValue" class="absolute text-xl font-bold font-mono text-white">36%</span>
+                </div>
+                <span id="cpuLabel" class="text-xs text-slate-500 mt-2">Đang phát hiện...</span>
+            </div>
+
+            <!-- RAM Gauge -->
+            <div class="bg-cardbg border border-bordercolor p-5 rounded-2xl flex flex-col items-center justify-center relative overflow-hidden">
+                <div class="text-slate-400 text-xs font-bold uppercase mb-2 flex items-center gap-2">
+                    <i class="fa-solid fa-memory text-brand-500"></i> RAM Memory
+                </div>
+                <div class="relative w-28 h-28 flex items-center justify-center">
+                    <svg class="w-full h-full transform -rotate-90">
+                        <circle cx="56" cy="56" r="45" stroke="#1e293b" stroke-width="8" fill="transparent"/>
+                        <circle id="ramGauge" cx="56" cy="56" r="45" stroke="#22c55e" stroke-width="8" stroke-dasharray="282" stroke-dashoffset="120" stroke-linecap="round" fill="transparent" class="transition-all duration-700"/>
+                    </svg>
+                    <span id="ramValue" class="absolute text-xl font-bold font-mono text-white">58%</span>
+                </div>
+                <span id="ramLabel" class="text-xs text-slate-500 mt-2">-- GB / -- GB</span>
+            </div>
+
+            <!-- GPU Gauge -->
+            <div class="bg-cardbg border border-bordercolor p-5 rounded-2xl flex flex-col items-center justify-center relative overflow-hidden">
+                <div class="text-slate-400 text-xs font-bold uppercase mb-2 flex items-center gap-2">
+                    <i class="fa-solid fa-display text-purple-500"></i> GPU Load
+                </div>
+                <div class="relative w-28 h-28 flex items-center justify-center">
+                    <svg class="w-full h-full transform -rotate-90">
+                        <circle cx="56" cy="56" r="45" stroke="#1e293b" stroke-width="8" fill="transparent"/>
+                        <circle id="gpuGauge" cx="56" cy="56" r="45" stroke="#a855f7" stroke-width="8" stroke-dasharray="282" stroke-dashoffset="210" stroke-linecap="round" fill="transparent" class="transition-all duration-700"/>
+                    </svg>
+                    <span id="gpuValue" class="absolute text-xl font-bold font-mono text-white">25%</span>
+                </div>
+                <span id="gpuLabel" class="text-xs text-slate-500 mt-2">Chưa xác định</span>
+            </div>
+
+            <!-- Disk Ping Gauge -->
+            <div class="bg-cardbg border border-bordercolor p-5 rounded-2xl flex flex-col items-center justify-center relative overflow-hidden">
+                <div class="text-slate-400 text-xs font-bold uppercase mb-2 flex items-center gap-2">
+                    <i class="fa-solid fa-hard-drive text-amber-500"></i> System Status
+                </div>
+                <div class="flex flex-col items-center justify-center h-28 space-y-2">
+                    <span class="text-3xl font-extrabold text-brand-500 font-mono">EXCELLENT</span>
+                    <span class="text-xs text-slate-400 bg-slate-800 px-3 py-1 rounded-full border border-slate-700">Dọn dẹp rác: <b class="text-white">2.4 GB</b></span>
+                </div>
+                <span class="text-xs text-slate-500">Nhiệt độ trung bình: 48°C</span>
+            </div>
+        </section>
+
+        <!-- Tweaks Selection Engine -->
+        <section id="tweaks" class="bg-cardbg border border-bordercolor rounded-2xl p-6">
+            <div class="flex flex-col md:flex-row md:items-center justify-between pb-6 border-b border-bordercolor gap-4">
+                <div>
+                    <h2 class="text-xl font-bold text-white flex items-center gap-2">
+                        <i class="fa-solid fa-sliders text-brand-accent"></i> Danh Sách Tweak Hệ Thống Windows
+                    </h2>
+                    <p class="text-sm text-slate-400">Tích chọn các tùy chỉnh tối ưu bên dưới để xuất Script chạy tự động an toàn.</p>
+                    <span id="selectedCounter" class="inline-block mt-2 text-[11px] font-bold text-brand-500 bg-brand-500/10 px-2 py-0.5 rounded-full">0 / 0 tweak đã chọn</span>
+                </div>
+                <div class="flex gap-2 flex-wrap">
+                    <button onclick="selectSafeTweaksOnly()" class="text-xs bg-brand-accent/10 hover:bg-brand-accent/20 text-brand-accent px-3 py-1.5 rounded-lg border border-brand-accent/30 font-semibold">
+                        <i class="fa-solid fa-shield-halved"></i> Chỉ chọn An Toàn
+                    </button>
+                    <button onclick="selectAllTweaks(true)" class="text-xs bg-slate-800 hover:bg-slate-700 text-slate-200 px-3 py-1.5 rounded-lg border border-slate-700">Chọn tất cả</button>
+                    <button onclick="selectAllTweaks(false)" class="text-xs bg-slate-800 hover:bg-slate-700 text-slate-200 px-3 py-1.5 rounded-lg border border-slate-700">Bỏ chọn</button>
+                </div>
+            </div>
+
+            <!-- Cảnh báo an toàn -->
+            <div class="mt-4 bg-amber-500/10 border border-amber-500/30 text-amber-300 text-xs rounded-xl px-4 py-3 flex items-start gap-2">
+                <i class="fa-solid fa-triangle-exclamation mt-0.5"></i>
+                <span>Các tweak gắn nhãn <b>"Nâng cao"</b> có thể ảnh hưởng tính năng bạn đang dùng (VD: Search, Xbox, DNS...). Script tự động tạo <b>System Restore Point</b> trước khi chạy, nhưng bạn nên hiểu rõ tweak trước khi tích chọn.</span>
+            </div>
+
+            <!-- Category Filter Bar -->
+            <div id="categoryFilters" class="flex flex-wrap gap-2 mt-4">
+                <!-- Dynamic Filter Buttons via JS -->
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 mt-6" id="tweakList">
+                <!-- Dynamic Content via JS -->
+            </div>
+        </section>
+
+        <!-- Game Optimization & Predictor -->
+        <section id="games" class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+            <div class="lg:col-span-2 bg-cardbg border border-bordercolor rounded-2xl p-6">
+                <h2 class="text-xl font-bold text-white mb-2 flex items-center gap-2">
+                    <i class="fa-solid fa-gamepad text-brand-500"></i> Tối Ưu Hóa Game & FPS Predictor
+                </h2>
+                <p class="text-sm text-slate-400 mb-6">Ước tính hiệu năng cải thiện sau khi áp dụng các Tweaks từ QMinhOTM.</p>
+
+                <div class="space-y-4">
+                    <div class="bg-slate-900/60 p-4 rounded-xl border border-slate-800 flex items-center justify-between">
+                        <div class="flex items-center space-x-4">
+                            <div class="w-12 h-12 bg-amber-500/10 text-amber-500 rounded-xl flex items-center justify-center font-bold text-lg">CS2</div>
+                            <div>
+                                <h4 class="font-bold text-white">Counter-Strike 2</h4>
+                                <p class="text-xs text-slate-400">Giảm Input Lag & Tăng 1% Low FPS</p>
+                            </div>
+                        </div>
+                        <div class="text-right">
+                            <span class="text-brand-500 font-bold text-sm">+15 - 25 FPS</span>
+                            <span class="block text-xs text-slate-500">Ping: -8ms</span>
+                        </div>
+                    </div>
+
+                    <div class="bg-slate-900/60 p-4 rounded-xl border border-slate-800 flex items-center justify-between">
+                        <div class="flex items-center space-x-4">
+                            <div class="w-12 h-12 bg-red-500/10 text-red-500 rounded-xl flex items-center justify-center font-bold text-lg">VAL</div>
+                            <div>
+                                <h4 class="font-bold text-white">Valorant</h4>
+                                <p class="text-xs text-slate-400">Tối ưu CPU Priority & Vanguard latency</p>
+                            </div>
+                        </div>
+                        <div class="text-right">
+                            <span class="text-brand-500 font-bold text-sm">+20 - 35 FPS</span>
+                            <span class="block text-xs text-slate-500">Ping: -5ms</span>
+                        </div>
+                    </div>
+
+
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Batch / Registry Code Exporter -->
+        <section id="script-gen" class="bg-cardbg border border-bordercolor rounded-2xl p-6">
+            <div class="flex items-center justify-between mb-4">
+                <div>
+                    <h2 class="text-xl font-bold text-white flex items-center gap-2">
+                        <i class="fa-solid fa-code text-brand-500"></i> Xuất File Tối Ưu (.BAT / .REG)
+                    </h2>
+                    <p class="text-sm text-slate-400">Đoạn mã Command Batch bên dưới được tự động tạo dựa theo các Tweak bạn đã tích chọn.</p>
+                </div>
+                <div class="flex gap-2">
+                    <button onclick="copyScript()" class="bg-slate-800 hover:bg-slate-700 text-white text-xs px-4 py-2 rounded-xl border border-slate-700 flex items-center gap-2">
+                        <i class="fa-regular fa-copy"></i> Sao chép Code
+                    </button>
+                    <button onclick="downloadScript()" class="bg-brand-500 hover:bg-brand-600 text-black font-bold text-xs px-4 py-2 rounded-xl flex items-center gap-2">
+                        <i class="fa-solid fa-download"></i> Tải File QMinhOTM.bat
+                    </button>
+                </div>
+            </div>
+
+            <pre class="bg-black/90 p-4 rounded-xl text-slate-300 code-font text-xs overflow-x-auto border border-slate-800 max-h-60"><code id="scriptOutput">@echo off
+:: =========================================================
+:: QMinhOTM - Windows Optimization Script
+:: Author: QMinhOTM Team
+:: =========================================================
+echo [QMinhOTM] Dang khoi tao tien trinh toi uu...
+pause</code></pre>
+        </section>
+
+    </main>
+
+    <!-- Footer -->
+    <footer class="border-t border-bordercolor bg-cardbg/50 py-6 text-center text-xs text-slate-500">
+        <div class="max-w-7xl mx-auto px-4">
+            <p>© 2026 <span class="text-brand-500 font-bold">QMinhOTM</span> - Optimizer Tool Manager. All rights reserved.</p>
+            <p class="mt-1">Thiết kế tối ưu dành riêng cho PC & Laptop Gaming / Workstation Windows.</p>
+        </div>
+    </footer>
+
+    <!-- Script kiểm tra trạng thái Đăng nhập hiển thị lên Header -->
+    <script>
+        function checkUserLoginState() {
+            const userMenu = document.getElementById('userMenu');
+            if (!userMenu) return;
+
+            // Lấy thông tin tên người dùng đã lưu từ localStorage (hoặc sessionStorage)
+            const loggedUser = localStorage.getItem('qminh_user');
+
+            if (loggedUser) {
+                userMenu.innerHTML = `
+                    <div class="flex items-center space-x-3 bg-slate-900 border border-slate-800 px-3 py-1.5 rounded-xl">
+                        <div class="w-7 h-7 rounded-full bg-brand-500/20 text-brand-500 flex items-center justify-center font-bold text-xs">
+                            <i class="fa-solid fa-user"></i>
+                        </div>
+                        <span class="text-xs text-slate-300 hidden sm:inline">Xin chào, <b class="text-brand-500">${loggedUser}</b></span>
+                        <button onclick="handleUserLogout()" class="text-xs bg-slate-800 hover:bg-red-500/20 hover:text-red-400 text-slate-400 px-2 py-1 rounded-lg border border-slate-700 transition" title="Đăng xuất">
+                            <i class="fa-solid fa-right-from-bracket"></i>
+                        </button>
+                    </div>
+                `;
+            } else {
+                userMenu.innerHTML = `
+                    <a href="login.html" class="text-xs bg-slate-800 hover:bg-slate-700 text-white font-semibold px-4 py-2 rounded-xl border border-slate-700 transition flex items-center gap-2">
+                        <i class="fa-regular fa-user text-brand-500"></i>
+                        <span>Đăng nhập</span>
+                    </a>
+                `;
+            }
+        }
+
+        function handleUserLogout() {
+            localStorage.removeItem('qminh_user');
+            checkUserLoginState();
+        }
+
+        window.addEventListener('DOMContentLoaded', () => {
+            checkUserLoginState();
+        });
+    </script>
+
+    <!-- External JavaScript -->
+    <script src="script.js"></script>
+</body>
+</html> 
